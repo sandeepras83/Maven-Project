@@ -2,18 +2,34 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: app-deployment
+  labels:
+    app: sandeepapp
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: my-app
+      app: sandeepapp
   template:
     metadata:
       labels:
-        app: my-app
+        app: sandeepapp
     spec:
       containers:
-      - name: my-image
-        image: gaganapp.azurecr.io/gaganprodapp
+      - name: my-container
+        image: sandeep101083/techedge-lab
+        imagePullPolicy: Always
         ports:
-        - containerPort: 80
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sandeepapp
+spec:
+  type: NodePort
+  ports:
+  - port: 8080
+    targetPort: 8080
+    nodePort: 31000 
+  selector:
+    app: sandeepapp 
